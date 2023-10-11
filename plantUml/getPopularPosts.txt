@@ -1,0 +1,18 @@
+@startuml
+
+actor AuthenticatedUser as AuthUser
+participant postController as controller
+participant GetPopularPosts as getPosts
+participant sequelizePostRepo as repo
+database SQLDB as DB
+
+AuthUser -> controller: GET /getPostsPopular
+controller -> getPosts: DTO: offset, userId
+getPosts -> repo: search popular posts
+repo -> DB: search into DB
+
+repo <-- DB: list popular posts
+getPosts <-- repo: list popular posts
+controller <-- getPosts: list popular posts
+AuthUser <-- controller: GET respose
+@enduml
